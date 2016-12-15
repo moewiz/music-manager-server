@@ -40,7 +40,12 @@ Song.updateSong = (id, song, options, callback) => {
 }
 
 Song.removeSong = (id, callback) => {
-  let query = {_id: id};
+  let query = { _id: id };
+  Song.remove(query, callback);
+}
+
+Song.removeMultipleSongs = (ids, callback) => {
+  let query = { _id: { $in: ids } };
   Song.remove(query, callback);
 }
 

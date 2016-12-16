@@ -12,7 +12,8 @@ let playlists = require('./routes/playlists');
 
 let app = express();
 // connect to Mongoose
-mongoose.connect('mongodb://localhost:27017/iMusic');
+require('dotenv').config();
+mongoose.connect('mongodb://'+process.env.DB_USR+':'+process.env.DB_PWD+'@ds061246.mlab.com:61246/mtips');
 let db = mongoose.connection;
 
 // view engine setup

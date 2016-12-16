@@ -54,7 +54,7 @@ router.delete('/:id', (req, res, next) => {
   });
 });
 
-router.delete('/multiple', (req, res, next) => {
+router.put('/', (req, res, next) => {
   let ids = req.body;
   Song.removeMultipleSongs(ids, (err, songs) => {
     if (err) {

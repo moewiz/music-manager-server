@@ -13,7 +13,11 @@ let playlists = require('./routes/playlists');
 let app = express();
 // connect to Mongoose
 require('dotenv').config();
-mongoose.connect('mongodb://'+process.env.DB_USR+':'+process.env.DB_PWD+'@ds061246.mlab.com:61246/mtips');
+let usr = process.env.DB_USR;
+let pwd = process.env.DB_PWD;
+let port = process.env.DB_PORT;
+let db_name = process.env.DB_NAME;
+mongoose.connect('mongodb://'+usr+':'+pwd+'@ds061246.mlab.com:'+port+'/'+db_name);
 let db = mongoose.connection;
 
 // view engine setup

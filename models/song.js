@@ -2,17 +2,9 @@ let mongoose = require('mongoose');
 
 // Song Schema
 const songSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  artist: {
-    type: String
-  },
-  create_date: {
-    type: Date,
-    default: Date.now
-  }
+  name: { type: String, required: true, trim: true },
+  artist: { type: String },
+  create_date: { type: Date, default: Date.now }
 });
 
 const Song = mongoose.model('Song', songSchema);
@@ -24,6 +16,12 @@ Song.getSongs = (callback, limit) => {
 
 Song.getSongById = (id, callback) => {
   Song.findById(id, callback);
+}
+
+Song.getSongsByIds = (ids, callback) => {
+  let query = { _id: { $in: ids } };
+
+  Song.find(query, callback);
 }
 
 Song.addSong = (song, callback) => {

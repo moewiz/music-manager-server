@@ -42,9 +42,7 @@ router.post('/login', (req, res, next) => {
           // return the information including token as JSON
           res.status(200).json({
             success: true,
-            token: 'JWT ' + token,
-            expires: expires,
-            user: user
+            token: 'JWT ' + token
           });
         } else {
           return res.status(403).json({ success: false, msg: 'Authentication failed! Wrong username or password.' });

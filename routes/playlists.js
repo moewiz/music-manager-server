@@ -4,7 +4,7 @@ let router = express.Router();
 Playlist = require('../models/playlist');
 
 /* GET playlists listing */
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   Playlist.getPlaylists((err, playlists) => {
     if (err) {
       throw err;
@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
   });
 });
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', (req, res) => {
   let id = req.params['id'];
   Playlist.getPlaylistById(id, (err, playlist) => {
     if (err) {
@@ -23,7 +23,7 @@ router.get('/:id', (req, res, next) => {
   });
 });
 
-router.get('/:id/songs', (req, res, next) => {
+router.get('/:id/songs', (req, res) => {
   let id = req.params['id'];
   Playlist.getSongs(id, (err, songs) => {
     if (err) {

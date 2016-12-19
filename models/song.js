@@ -7,7 +7,7 @@ const songSchema = mongoose.Schema({
   create_date: { type: Date, default: Date.now }
 });
 
-const Song = mongoose.model('Song', songSchema);
+let Song = mongoose.model('Song', songSchema);
 
 // Get Songs
 Song.getSongs = (callback, limit) => {

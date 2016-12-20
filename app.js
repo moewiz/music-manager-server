@@ -26,10 +26,24 @@ app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-  next();
+  if (req.method === "OPTIONS") {
+    // add headers to response and send
+    let headers = {};
+    headers["Access-Control-Allow-Origin"] = "*";
+    headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
+    headers["Access-Control-Allow-Credentials"] = false;
+    headers["Access-Control-Max-Age"] = '86400'; // 24 hours
+    headers["Access-Control-Allow-Headers"] = "Origin, X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Authorization";
+    res.writeHead(200, headers);
+    res.end();
+  } else {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+    res.header("Access-Control-Allow-Credentials", false); // don't need cookie
+    res.header("Access-Control-Max-Age", 86400);
+    next();
+  }
 });
 app.use(logger('dev')); // log to console
 app.use(bodyParser.json()); // for parsing application/json

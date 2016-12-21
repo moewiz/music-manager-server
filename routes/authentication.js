@@ -28,7 +28,7 @@ router.post('/login', (req, res, next) => {
   User.findUserByUsername(req.body.username, function (err, user) {
     if (err) throw err;
     if (!user) {
-      return res.status(403).json({ success: false, msg: 'Authentication failed. Wrong username or password.' });
+      return res.status(401).json({ success: false, msg: 'Authentication failed. Wrong username or password.' });
     } else {
       // check password
       user.comparePassword(req.body.password, (err, isMatch) => {
@@ -40,12 +40,12 @@ router.post('/login', (req, res, next) => {
             exp: expires
           }, config.secret);
           // return the information including token as JSON
-          res.status(200).json({
+          return res.status(200).json({
             success: true,
             token: 'JWT ' + token
           });
         } else {
-          return res.status(403).json({ success: false, msg: 'Authentication failed! Wrong username or password.' });
+          return res.status(401).json({ success: false, msg: 'Authentication failed! Wrong username or password.' });
         }
       });
     }

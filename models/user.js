@@ -1,9 +1,9 @@
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
-let ObjectId = mongoose.Types.ObjectId;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const ObjectId = mongoose.Types.ObjectId;
 const bcrypt = require('bcrypt');
 
-let userSchema = new Schema({
+const userSchema = new Schema({
   username: {
     type: String,
     unique: true,
@@ -15,45 +15,48 @@ let userSchema = new Schema({
   }
 });
 
-userSchema.pre('save', function (next) {
-  let user = this;
-  if (this.isModified('password') || this.isNew) {
+userSchema.pre('save', (next) => {
+  const user = this;
+
+  if (this.isModified('password') || this.isNew)
     bcrypt.genSalt(10, (err, salt) => {
-      if (err) {
+      if (err)
         return next(err);
-      }
-      bcrypt.hash(user.password, salt, (err, hash) => {
-        if (err) {
-          return next(err);
-        }
+
+      bcrypt.hash(user.password, salt, (error, hash) => {
+        if (error)
+          return next(error);
+
         user.password = hash;
         next();
       });
     });
-  } else {
+  else
     return next();
-  }
+
 });
 
-userSchema.methods.comparePassword = function (pwd, callback) {
+userSchema.methods.comparePassword = (pwd, callback) => {
   bcrypt.compare(pwd, this.password, (err, isMatch) => {
-    if (err) {
+    if (err)
       return callback(err);
-    }
+
     callback(null, isMatch);
   });
-}
+};
 
-let User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 
 User.findUserByUsername = (username, callback) => {
-  let query = { username: username };
+  const query = {username};
+
   User.findOne(query, callback);
-}
+};
 
 User.findUserById = (id, callback) => {
-  let query = { _id: new ObjectId(id) };
+  const query = {_id: new ObjectId(id)};
+
   User.findOne(query, callback);
-}
+};
 
 module.exports = User;
